@@ -1,0 +1,25 @@
+inherit ant
+
+DESCRIPTION="Eclipse Java Compiler"
+HOMEPAGE="http://www.eclipse.org/"
+SRC_URI="http://archive.eclipse.org/eclipse/downloads/drops/R-${PV}-200802211800/ecjsrc.zip"
+SRC_DIR=.
+
+PATCH_URI="mirror://portage/dev-java/eclipse-ecj/files/eclipse-ecj-3.3.0-gcj.patch
+           3.3-no-java16.patch
+           3.3-separate-ant-jar.patch
+           3.3-javadoc.patch"
+
+# created by gcj.patch
+DISTCLEANFILES="org/eclipse/jdt/internal/compiler/batch/GCCMain.java"
+
+ANT_BUILD_TARGETS="build javadoc"
+
+src_install() {
+	cd ${B}
+	dojar ecj.jar
+	doanttask ant-ecj.jar
+	java_wrapper ecj ${JAVA_DIR}/ecj.jar
+	dojavadoc javadoc
+	dodoc about.html
+}

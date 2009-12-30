@@ -1,0 +1,39 @@
+java-ecj
+------------------------------------------
+Eclipse Compiler for Java
+
+Build requirements:
+  ant-1.7.1-1
+  binutils-2.19.51-1
+  cygport-0.9.10-1
+  jamvm-1.5.3-1
+
+Canonical website:
+  http://www.eclipse.org/
+
+Canonical download:
+  http://archive.eclipse.org/eclipse/downloads/index.php
+
+-------------------------------------------
+
+Build instructions:
+  unpack java-ecj-3.3.2-X-src.tar.bz2
+    if you use setup to install this src package, it will be
+	 unpacked under /usr/src automatically
+  cd /usr/src
+  cygport ./java-ecj-3.3.2-X.cygport all
+
+This will create:
+  /usr/src/ecj-3.3.2-X-src.tar.bz2
+  /usr/src/ecj-3.3.2-X.tar.bz2
+
+-------------------------------------------
+
+Port Notes:
+
+----- version 3.3.2-1 -----
+Initial release for Cygwin 1.7.
+
+
+Cygwin port maintained by:
+http://sourceware.org/cygwinports/

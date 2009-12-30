@@ -1,0 +1,41 @@
+Build the Ant compiler adapter as a separate jar.
+
+--- origsrc/build.xml	2007-02-23 15:17:54.000000000 -0600
++++ src/build.xml	2009-11-29 00:40:35.061069800 -0600
+@@ -3,6 +3,7 @@
+ 
+ 	<property name="output" value="bin" />
+ 	<property name="jar_file" value="ecj.jar" />
++	<property name="ant_jar_file" value="ant-ecj.jar" />
+ 
+ 	<target name="build">
+ 		<delete file="${basedir}/${jar_file}" failonerror="no" />
+@@ -18,13 +19,27 @@
+ 		</javac>
+ 
+ 		<zip destfile="${basedir}/${jar_file}">
+-			<fileset dir="${output}" />
++			<fileset dir="${output}">
++				<exclude name="**/antadapter/**"/>
++				<exclude name="**/JDTCompilerAdapter*"/>
++			</fileset>
+ 			<fileset dir="${basedir}">
+ 				<include name="about.html"/>
+ 				<include name="**/*.rsc"/>
+ 				<include name="META-INF/**"/>
+ 				<include name="**/*.properties"/>
+ 				<exclude name="META-INF/eclipse.inf"/>
++				<exclude name="**/antadapter/**"/>
++			</fileset>
++		</zip>
++
++		<zip destfile="${basedir}/${ant_jar_file}">
++			<fileset dir="${output}">
++				<include name="**/antadapter/*.class"/>
++				<include name="**/JDTCompilerAdapter*"/>
++			</fileset>
++			<fileset dir="${basedir}">
++				<include name="**/antadapter/messages.properties"/>
+ 			</fileset>
+ 		</zip>
+ 		<delete dir="${output}" />

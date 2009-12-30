@@ -1,0 +1,20 @@
+--- origsrc/build.xml	2009-12-02 03:32:03.043475100 -0600
++++ src/build.xml	2009-12-02 04:03:47.917996600 -0600
+@@ -42,6 +42,14 @@
+ 				<include name="**/antadapter/messages.properties"/>
+ 			</fileset>
+ 		</zip>
+-		<delete dir="${output}" />
+ 	</target>
+-</project>
+\ No newline at end of file
++
++	<target name="javadoc">
++		<javadoc destdir="javadoc">
++			<packageset dir="." defaultexcludes="yes">
++				<exclude name="**/apt/**"/>
++				<exclude name="org/eclipse/jdt/internal/compiler/tool/**"/>
++			</packageset>
++		</javadoc>
++	</target>
++</project>
