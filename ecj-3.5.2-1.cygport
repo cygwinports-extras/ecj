@@ -1,0 +1,40 @@
+inherit ant
+
+DESCRIPTION="Eclipse Java Compiler"
+HOMEPAGE="http://www.eclipse.org/"
+SRC_URI="
+	http://archive.eclipse.org/eclipse/downloads/drops/R-${PV}-201002111343/ecjsrc-${PV}.zip
+	http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/eclipse-gcj/gcc.properties?content-type=text/plain&cvsroot=rhug
+	http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/eclipse-gcj/org/eclipse/jdt/internal/compiler/batch/GCCMain.java?content-type=text/plain&cvsroot=rhug
+"
+SRC_DIR=.
+
+PATCH_URI="
+	3.3-no-java16.patch
+	3.3-separate-ant-jar.patch
+	3.3-javadoc.patch
+"
+
+PKG_NAMES="ecj ant-ecj java-ecj"
+ecj_CONTENTS="usr/bin/ usr/share/doc/"
+ant_ecj_CONTENTS=${ANT_HOME#/}
+java_ecj_CONTENTS=${JAVA_DIR#/}" "${JAVADOC_DIR#/}
+
+# add custom main() necessary for GCC ecj1
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	mv -f GCCMain.java org/eclipse/jdt/internal/compiler/batch/
+	cat gcc.properties >> org/eclipse/jdt/internal/compiler/batch/messages.properties
+}
+
+ANT_BUILD_TARGETS="build javadoc"
+ANT_INSTALL_JARS="ecj.jar"
+ANT_INSTALL_TASKS="ant-ecj.jar"
+ANT_INSTALL_JAVADOC="javadoc"
+
+src_install() {
+	cd ${B}
+	ant_install
+	java_wrapper ecj ecj.jar
+}
+DOCS="about.html"
