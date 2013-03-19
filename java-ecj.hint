@@ -1,5 +1,0 @@
-category: Devel Java
-requires:
-external-source: ecj
-sdesc: "Eclipse Compiler for Java (library)"
-ldesc: "Eclipse Compiler for Java"

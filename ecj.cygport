@@ -1,29 +1,39 @@
 inherit ant
 
-DESCRIPTION="Eclipse Java Compiler"
+NAME="ecj"
+VERSION=3.7.2
+DATESTAMP=201202080800
+RELEASE=1
+CATEGORY="Java"
+SUMMARY="Eclipse Compiler for Java"
+DESCRIPTION="Eclipse Compiler for Java"
 HOMEPAGE="http://www.eclipse.org/"
 SRC_URI="
-	http://archive.eclipse.org/eclipse/downloads/drops/R-${PV}-201002111343/ecjsrc-${PV}.zip
+	http://archive.eclipse.org/eclipse/downloads/drops/R-${VERSION}-${DATESTAMP}/ecjsrc-${VERSION}.jar
 	http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/eclipse-gcj/gcc.properties?content-type=text/plain&cvsroot=rhug
 	http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/eclipse-gcj/org/eclipse/jdt/internal/compiler/batch/GCCMain.java?content-type=text/plain&cvsroot=rhug
 "
 SRC_DIR=.
 
 PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/ecj.git/plain/ecj-defaultto1.5.patch?h=f17
 	3.3-no-java16.patch
 	3.3-separate-ant-jar.patch
 	3.3-javadoc.patch
-	3.5-default-jdk15.patch
 "
 
-PKG_NAMES="ecj ant-ecj java-ecj"
+PKG_NAMES="ecj ant-ecj java-ecj javadoc-ecj"
+ecj_REQUIRES="jamvm java-ecj"
 ecj_CONTENTS="usr/bin/ usr/share/doc/"
 ant_ecj_CONTENTS=${ANT_HOME#/}
-java_ecj_CONTENTS=${JAVA_DIR#/}" "${JAVADOC_DIR#/}
+java_ecj_CONTENTS=${JAVA_DIR#/}
+javadoc_ecj_SUMMARY="API documentation for ECJ"
+javadoc_ecj_CONTENTS=${JAVADOC_DIR#/}
 
 # add custom main() necessary for GCC ecj1
 CYGPORT_USE_UNSTABLE_API=1
 src_unpack_hook() {
+	${JAR} xf ecjsrc-${VERSION}.jar
 	mv -f GCCMain.java org/eclipse/jdt/internal/compiler/batch/
 	cat gcc.properties >> org/eclipse/jdt/internal/compiler/batch/messages.properties
 }
@@ -36,6 +46,6 @@ ANT_INSTALL_JAVADOC="javadoc"
 src_install() {
 	cd ${B}
 	ant_install
-	java_wrapper ecj ecj.jar
+	java_wrapper ecj ecj.jar org.eclipse.jdt.internal.compiler.batch.Main
 }
 DOCS="about.html"

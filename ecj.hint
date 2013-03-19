@@ -1,4 +1,0 @@
-category: Devel Java
-requires: jamvm java-ecj
-sdesc: "Eclipse Compiler for Java"
-ldesc: "Eclipse Compiler for Java"
